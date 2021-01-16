@@ -21,6 +21,9 @@ const numCPUs = require('os').cpus().length;
 
 const colors = require('colors');
 
+const spawn = require("child_process").spawn;
+let {PythonShell} = require('python-shell')
+
 // Create portf
 const serverPort = process.env.PORT || 3007;
 server.listen(serverPort, function () {
@@ -36,17 +39,37 @@ app.use('/*', function (req, res, next) {
 
 let Files = {}
 
-
-
 // Server-client connection architecture
 io.on('connection', function(socket) {
-	console.log("Connection made")
+	console.log("Connection made", new Date())
 
 	var uploader = new siofu();
-    uploader.dir = "./public/files";
+    uploader.dir = "./public/temp";
     uploader.listen(socket);
 
     uploader.on('complete', function (event) {
+
+    	console.log(event.file.name)
+
+    	let options = {
+		  mode: 'text',
+		  pythonOptions: ['-u'], // get print results in real-time
+		  args: [event.file.name, 'Alex']
+		};
+
+		PythonShell.run('./python/main.py', options, function (err, results) {
+		  if (err) throw err;
+		  // results is an array consisting of messages collected during execution
+		  console.log('results: %j', results);
+		});
+
+		/*const pythonProcess = spawn('python',["./python/main.py", event.file.name, "Alex"]);
+
+		pythonProcess.stdout.on('data', function(data) { 
+	        console.log(data.toString())
+	    } ) */
+
+
     	/*fs.readdir(__dirname + '/public/questions', (err, files) => {
 			if (err) {
 				console.log("Error finding questions")

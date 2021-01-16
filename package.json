@@ -12,6 +12,7 @@
     "morgan": "^1.9.1",
     "ola": "^1.1.0",
     "os": "^0.1.1",
+    "python-shell": "^2.0.3",
     "serve-favicon": "^2.5.0",
     "simplex-noise": "^2.4.0",
     "socket.io": "^2.2.0",

@@ -5,7 +5,7 @@ import os
 import sys
 
 
-images = convert_from_path('../public/temp/' + sys.argv[1])
+images = convert_from_path('./public/temp/' + sys.argv[1])
 img =  cv2.cvtColor(np.array(images[0]), cv2.COLOR_RGB2BGR)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
@@ -31,7 +31,7 @@ for c in contours:
         box_tuples.append((x, y, w, h))
 box_tuples = sorted(box_tuples, key=lambda box: box[1])
 question_number = 0
-folder_loc = '../public/questions/' + sys.argv[2] + '/'
+folder_loc = './public/questions/' + sys.argv[2] + '/'
 if not os.path.exists(folder_loc):
     os.mkdir(folder_loc)
 for box in box_tuples:

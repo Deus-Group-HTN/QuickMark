@@ -36,8 +36,8 @@
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
       <link rel="stylesheet" href="./css/owl.theme.default.css">
-   </head>
-   <body>
+   	</head>
+   	<body>
       <!-- Navbar (sit on top) -->
       <div class="w3-top">
          <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:3px;">
@@ -57,7 +57,7 @@
       <div id="bodysection">
          <div id="upload_section">
             <h2>Upload Tests Section</h2>
-            <label>Student Name: </label><input type="student_name" id="siofu_input" multiple><br/>
+            <label>Student Name: </label><input type="student_name"><br/>
             <br><label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
             <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
             <!-- <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/> -->
@@ -91,45 +91,45 @@
          	UPLOAD TESTS SECTION
          
          */
-         	var socket = io.connect();
-         var uploader = new SocketIOFileUpload(socket);
-         uploader.listenOnInput(document.getElementById("siofu_input"));
+        var socket = io.connect();
+        var uploader = new SocketIOFileUpload(socket);
+        uploader.listenOnInput(document.getElementById("siofu_input"));
          
-         // Start event
+        // Start event
          
-         uploader.addEventListener("start", function (event) {
-         	console.log("Starting upload", event.file.name)
-         })
+        uploader.addEventListener("start", function (event) {
+        	console.log("Starting upload", event.file.name)
+        })
          
-         // Progress event
+        // Progress event
          
-         uploader.addEventListener("progress", function (event) {
+        uploader.addEventListener("progress", function (event) {
          	var percentage = event.bytesLoaded / event.file.size * 100;
          	$("#upload_progress").val(percentage)
-         })
+        })
+        
+        // Complete Event
+        
+        var updateId;
          
-         // Complete Event
+        uploader.addEventListener('complete', function (event) {
+        	console.log("Completed upload", event.file.name)
+        })
          
-         var updateId;
-         
-         uploader.addEventListener('complete', function (event) {
-         	console.log("Completed upload", event.file.name)
-         })
-         
-         uploader.addEventListener('error', function (event) {
-         	console.log("Error upload", event.file.name)
-         })
+        uploader.addEventListener('error', function (event) {
+        	console.log("Error upload", event.file.name)
+        })
          
          
-         /*
+        /*
          
          	MARKING SECTION
          
-         */
+        */
          
          let owl = $(".owl-carousel");
          
-         socket.on('files', function (data) {
+        socket.on('files', function (data) {
          	let content = "";
          	for (let file of data) {
          		let path = "./questions/" + file;
@@ -137,7 +137,7 @@
          	}
          
          	owl.append(content)
-         
+        
          	owl.owlCarousel({
                	center: true,
          	    loop:false,
@@ -146,45 +146,43 @@
          	    margin:50
           
            });
-         })
+        })
          
-         $(window).keyup(function (event) {    
+        $(window).keyup(function (event) {    
          
-             // handle cursor keys
-             if (event.keyCode == 37) {
+            // handle cursor keys
+            if (event.keyCode == 37) {
                 // go left
                 owl.trigger('prev.owl.carousel');
-             } else if (event.keyCode == 39) {
+            } else if (event.keyCode == 39) {
                 // go right
                 owl.trigger('next.owl.carousel');
-             }
+            }
          
-         });
+        });
          
-         let currQuestion = 0;
-         let students = [
+        let currQuestion = 0;
+        let students = {};
          
-         ]
-         
-         $("#score").keyup(function (event) {
+        $("#score").keyup(function (event) {
          	if (event.keyCode == 13) {
          		console.log($("#score").val())
          		owl.trigger('next.owl.carousel');
          		$("#score").val("")
          	}
-         })
+        })
          
-         owl.on('changed.owl.carousel', function (e) {
+        owl.on('changed.owl.carousel', function (e) {
          	currQuestion = e.item.index;
                    console.log(e.item.index)
                });
          
          
-         /*
+        /*
          
          	VIEW SCORE SECTION
          
-         */
+        */
          
          
       </script>
