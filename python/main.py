@@ -39,7 +39,6 @@ for box in box_tuples:
     crop_img = img[y:y+h, x:x+w]
     filename = folder_loc + str(question_number) + '.jpg'
     cv2.imwrite(os.path.join(os.getcwd(), filename), crop_img)
-print('Test processed.')
 # res_final = cv2.bitwise_and(img, img, mask=cv2.bitwise_not(mask))
 
 # cv2.imshow("boxes", mask)
