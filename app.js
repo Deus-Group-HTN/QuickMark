@@ -41,7 +41,7 @@ io.on('connection', function(socket) {
 	console.log("Connection made")
 
 	var uploader = new siofu();
-    uploader.dir = "./files";
+    uploader.dir = "./public/files";
     uploader.listen(socket);
 
 	socket.on('disconnect', function () {

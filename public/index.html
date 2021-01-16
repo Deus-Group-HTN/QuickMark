@@ -26,7 +26,6 @@
 			body {
 				background-color: #ADD8E6;
 				margin: 0;
-				overflow: hidden;
 
 			}
 
@@ -46,10 +45,13 @@
 
         <h4></h4>
 
-        <!-- <embed src="file_name.pdf" width="800px" height="2100px" /> -->
+        <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/>
 
         <h2>Mark Tests Section</h2>
 
+        <p>Is the student's answer correct?</p>
+        <button>Yes</button>
+        <button>No</button>
 
         <h2>View Student Scores Section</h2>
 
@@ -57,11 +59,20 @@
 		<script src="javascripts/socket.io.js"></script>
 		<script src="javascripts/jquery.js"></script>
 		<script src="javascripts/client.js"></script>
+		<script src="javascripts/pdf.js"></script>
+		<script src="javascripts/pdf.worker.js"></script>
 
 		<script>
 		 	var socket = io.connect();
 			var uploader = new SocketIOFileUpload(socket);
 			uploader.listenOnInput(document.getElementById("siofu_input"));
+
+			// normal url to a PDF or a local object url created while uploading PDF
+			// pdf_doc holds the handle to the PDF document
+			pdf_doc = await pdfjsLib.getDocument({ url: 'http://yourserver.com/sample.pdf' });
+
+			// binary data
+			pdf_doc = pdfjsLib.getDocument({ data: binary_data });
 
 		</script>
 	</body>
