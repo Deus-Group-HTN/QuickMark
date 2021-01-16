@@ -15,9 +15,9 @@
       <meta name="keywords" content="HTML, CSS, JavaScript, Three.js">
       <meta name="author" content="Deus Group">
       <style>
-         body {font-family: "Times New Roman", Georgia, Serif;}
+         body {font-family: sans-serif, "Times New Roman", Georgia, Serif;}
          h1, h2, h3, h4, h5, h6 {
-         font-family: "Playfair Display";
+         font-family: sans-serif;
          }
          body {
          background-color: #ffffff;
@@ -57,10 +57,8 @@
       <div id="bodysection">
          <div id="upload_section">
             <h2>Upload Tests Section</h2>
-            <label>Student Name: </label><input type="student_name"><br/>
             <br><label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
             <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
-            <!-- <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/> -->
          </div>
          <br><br>
          <div id="marking_section">
@@ -74,6 +72,9 @@
             <br>
             <br>
             <button id="submit_score">Submit</button>
+
+            <button id="prev_question">Previous Question</button>
+            <button id="next_question">Next Question</button>
          </div>
          <br><br>
          <div id="score_section">
@@ -126,27 +127,34 @@
          	MARKING SECTION
          
         */
-         
-         let owl = $(".owl-carousel");
+        
+        let students = {}
+
+        let owl = $(".owl-carousel");
+
+        owl.owlCarousel({
+           	center: true,
+     	    loop:false,
+     	    nav:true,
+     	    items: 1.2,
+     	    margin: 50
+       });
          
         socket.on('files', function (data) {
-         	let content = "";
-         	for (let file of data) {
-         		let path = "./questions/" + file;
-         		content += "<img class='individual-question' src=" + path + ">"
-         	}
-         
-         	owl.append(content)
-        
-         	owl.owlCarousel({
-               	center: true,
-         	    loop:false,
-         	    nav:true,
-         	    items: 1.2,
-         	    margin:50
-          
-           });
+        	students[data.name] = data.files;
+
+        	doStuff();
+
         })
+
+        function doStuff() {
+         	/*for (let file of data.files) {
+         		let path = "./questions/" + data.name + "/" + file;
+         		let content = "<img class='individual-question' src=" + path + ">"
+
+         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel')
+         	}*/
+        }
          
         $(window).keyup(function (event) {    
          
@@ -162,7 +170,6 @@
         });
          
         let currQuestion = 0;
-        let students = {};
          
         $("#score").keyup(function (event) {
          	if (event.keyCode == 13) {
@@ -173,10 +180,18 @@
         })
          
         owl.on('changed.owl.carousel', function (e) {
-         	currQuestion = e.item.index;
-                   console.log(e.item.index)
-               });
-         
+ 			currQuestion = e.item.index;
+          	console.log(e.item.index)
+   		});
+
+   		$("#next_question").click(function () {
+
+   		})
+
+   		$("#prev_question").click(function () {
+   			
+   		})
+ 
          
         /*
          

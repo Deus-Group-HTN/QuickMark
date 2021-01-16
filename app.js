@@ -49,9 +49,9 @@ io.on('connection', function(socket) {
 
     uploader.on('complete', function (event) {
 
-    	let studentName = 'Alex'
+    	let studentName = event.file.name.split('.').slice(0, -1).join('.');
 
-    	console.log(event.file.name)
+    	console.log("Uploaded:", event.file.name)
 
     	let options = {
 		  mode: 'text',
@@ -64,6 +64,12 @@ io.on('connection', function(socket) {
 		  // results is an array consisting of messages collected during execution
 		  console.log("Completed image processing");
 
+		  fs.unlink(__dirname + '/public/temp/' + event.file.name, function (err) {
+		  	if (err) {
+		  		console.log("Unable to delete file");
+		  	}
+		  })
+
 		  fs.readdir(__dirname + '/public/questions/' + studentName, (err, files) => {
 				if (err) {
 					console.log("Error finding questions")
@@ -71,29 +77,15 @@ io.on('connection', function(socket) {
 					var oFiles = [];
 					for (var i = 0; i < files.length; i++)
 						oFiles.push(files[i])
-					socket.emit('files', oFiles)
+					socket.emit('files', {
+						files: oFiles,
+						name: studentName
+					})
 				}
 			})
 		});
 
-		/*const pythonProcess = spawn('python',["./python/main.py", event.file.name, "Alex"]);
-
-		pythonProcess.stdout.on('data', function(data) { 
-	        console.log(data.toString())
-	    } ) */
-
     })
-
-    fs.readdir(__dirname + '/public/questions', (err, files) => {
-		if (err) {
-			console.log("Error finding questions")
-		} else {
-			var oFiles = [];
-			for (var i = 0; i < files.length; i++)
-				oFiles.push(files[i])
-			socket.emit('files', oFiles)
-		}
-	})
 
 	socket.on('disconnect', function () {
 
