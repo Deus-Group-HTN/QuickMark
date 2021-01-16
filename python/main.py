@@ -6,9 +6,9 @@ import sys
 import shutil
 
 
-images = convert_from_path('../public/temp/' + sys.argv[1])
+images = convert_from_path('./public/temp/' + sys.argv[1])
 question_number = 0
-folder_loc = '../public/questions/' + sys.argv[2] + '/'
+folder_loc = './public/questions/' + sys.argv[2] + '/'
 if os.path.exists(folder_loc):
     shutil.rmtree(folder_loc)
 os.mkdir(folder_loc)
