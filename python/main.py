@@ -15,7 +15,6 @@ thresh_inv = cv2.inRange(gray, 0, 120)
 # Blur the image
 blur = cv2.GaussianBlur(thresh_inv,(1,1),0)
 
-cv2.imshow("a", blur)
 
 thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
 
