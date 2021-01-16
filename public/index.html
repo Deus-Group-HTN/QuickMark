@@ -63,15 +63,18 @@
          <br><br>
          <div id="marking_section">
             <h2>Mark Tests Section</h2>
-            <h3>Student: Bob</h3>
+            <h3 id="currentStudent"></h3>
             <div id="owl-demo" class="owl-carousel owl-theme">
             </div>
             <label>Score: </label><input id="score" type="text"><br><br>
-            <label>Comments: </label>
-            <textarea id="comment" rows="4" cols="50"></textarea>
+            <!-- <label>Comments: </label>
+            <textarea id="comment" rows="4" cols="50"></textarea> -->
             <br>
             <br>
             <button id="submit_score">Submit</button>
+
+            <br>
+            <br>
 
             <button id="prev_question">Previous Question</button>
             <button id="next_question">Next Question</button>
@@ -95,10 +98,18 @@
         var socket = io.connect();
         var uploader = new SocketIOFileUpload(socket);
         uploader.listenOnInput(document.getElementById("siofu_input"));
+        var numberOfFiles = 0;
+
+        // Choose event
+
+        uploader.addEventListener("choose", function (event) {
+        	numberOfFiles = event.files.length;
+        })
          
         // Start event
          
         uploader.addEventListener("start", function (event) {
+        	console.log(event)
         	console.log("Starting upload", event.file.name)
         })
          
@@ -115,20 +126,22 @@
          
         uploader.addEventListener('complete', function (event) {
         	console.log("Completed upload", event.file.name)
+
         })
          
         uploader.addEventListener('error', function (event) {
         	console.log("Error upload", event.file.name)
         })
          
-         
+        
         /*
          
          	MARKING SECTION
          
         */
         
-        let students = {}
+        let students = [];
+        let numberOfQuestions = 0;
 
         let owl = $(".owl-carousel");
 
@@ -136,18 +149,40 @@
            	center: true,
      	    loop:false,
      	    nav:true,
-     	    items: 1.2,
+     	    items: 2,
      	    margin: 50
-       });
+       	});
          
         socket.on('files', function (data) {
-        	students[data.name] = data.files;
+        	console.log("Received", data.name, "files")
 
-        	doStuff();
-
+        	students.push({
+        		name: data.name,
+        		files: data.files,
+        		score: [],
+        		comments: []
+        	})
+        	console.log(students.length)
+        	if (students.length == numberOfFiles) {
+        		numberOfQuestions = data.files.length;
+        		displayQuestion(1);
+        	}
         })
 
-        function doStuff() {
+        function displayQuestion(questionNumber) {
+
+        	for (var i=0; i<100; i++) {
+			   $(".owl-carousel").trigger('remove.owl.carousel', [i]).trigger('refresh.owl.carousel');
+			}
+
+        	for (let student of students) {
+        		let studentAnswers = student.files;
+
+        		let path = "./questions/" + student.name + "/" + studentAnswers[questionNumber-1];
+         		let content = "<img class='individual-question' src=" + path + ">"
+        		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel').trigger('refresh.owl.carousel');
+        	}
+
          	/*for (let file of data.files) {
          		let path = "./questions/" + data.name + "/" + file;
          		let content = "<img class='individual-question' src=" + path + ">"
@@ -155,7 +190,7 @@
          		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel')
          	}*/
         }
-         
+        
         $(window).keyup(function (event) {    
          
             // handle cursor keys
@@ -169,27 +204,37 @@
          
         });
          
-        let currQuestion = 0;
+        let currQuestion = 1;
          
         $("#score").keyup(function (event) {
          	if (event.keyCode == 13) {
-         		console.log($("#score").val())
+
+         		students[currStudent].score[currQuestion-1] = parseInt($("#score").val())
+
+         		console.log("Gave a score of",$("#score").val(),"to",students[currStudent].name)
          		owl.trigger('next.owl.carousel');
          		$("#score").val("")
          	}
         })
          
         owl.on('changed.owl.carousel', function (e) {
- 			currQuestion = e.item.index;
-          	console.log(e.item.index)
+ 			currStudent = e.item.index;
    		});
 
    		$("#next_question").click(function () {
-
+   			if (currQuestion < numberOfQuestions) {
+   				console.log("Moving to question", currQuestion+1)
+   				currQuestion += 1;
+   				displayQuestion(currQuestion)
+   			}
    		})
 
    		$("#prev_question").click(function () {
-   			
+   			if (currQuestion > 0) {
+   				console.log("Moving to question", currQuestion-1)
+   				currQuestion -= 1;
+   				displayQuestion(currQuestion)
+   			}
    		})
  
          
