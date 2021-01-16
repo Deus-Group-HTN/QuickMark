@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-print('Hello world')
-=======
 import cv2
 
 
@@ -27,5 +24,4 @@ def get_contours(img):
     cv2.waitKey(0) 
     cv2.destroyAllWindows()
 
-s1(img)
->>>>>>> Stashed changes
+get_contours(img)
