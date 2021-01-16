@@ -1,189 +1,192 @@
-
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>QuickMark</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<meta property="og:title" content="QuickMark" />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://quickmark.victorwei.com" />
-		<meta property="og:image" content="https://quickmark.victorwei.com/content.png" />
-		<meta property="og:description" content="MARK EASY" />
-		<meta name="keywords" content="HTML, CSS, JavaScript, Three.js">
-		<meta name="author" content="Deus Group">
-
-		<style>
-			html, body {
-
-			}
-
-			body {
-				background-color: #ADD8E6;
-
-			}
-
-			.item {
-				display: inline-block;
-			}
-
-			.individual-question {
-			    display: block;
-			}
-
-		</style>
-
-		<link rel="stylesheet" href="./css/owl.carousel.css">
-		<link rel="stylesheet" href="./css/owl.theme.default.css">
-	</head>
-	<body>
-		<center>
-
-			<h1>QuickMark</h1>
-
-			<div id="upload_section">
-				<h2>Upload Tests Section</h2>
-
-				<label>Student Name: </label><input type="student_name" id="siofu_input" multiple><br/>
-		        <label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
-		        <label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
-
-		        <!-- <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/> -->
-	    	</div>
-
-	    	<div id="marking_section">
-		        <h2>Mark Tests Section</h2>
-
-		        <h3>Student: Bob</h3>
-
-	        	<div id="owl-demo" class="owl-carousel owl-theme">
-
-				</div>
-
-		        <label>Score: </label><input id="score" type="text"><br>
-		        <label>Comments: </label><textarea id="comment" rows="4" cols="50"></textarea><br>
-		        <button id="submit_score">Submit</button>
-
-		    </div>
-
-
-		    <div id="score_section">
-	        	<h2>View Student Scores Section</h2>
-
-
-
-	    	</div>
-	    </center>
-
-		<!-- Load Resources -->
-		<script src="javascripts/socket.io.js"></script>
-		<script src="javascripts/jquery.js"></script>
-		<script src="javascripts/owl.carousel.js"></script>
-		<script src="javascripts/client.js"></script>
-
-		<script>
-
-			/*
-
-				UPLOAD TESTS SECTION
-
-			*/
-		 	var socket = io.connect();
-			var uploader = new SocketIOFileUpload(socket);
-			uploader.listenOnInput(document.getElementById("siofu_input"));
-
-			// Start event
-
-			uploader.addEventListener("start", function (event) {
-				console.log("Starting upload", event.file.name)
-			})
-
-			// Progress event
-
-			uploader.addEventListener("progress", function (event) {
-				var percentage = event.bytesLoaded / event.file.size * 100;
-				$("#upload_progress").val(percentage)
-			})
-
-			// Complete Event
-
-			var updateId;
-
-			uploader.addEventListener('complete', function (event) {
-				console.log("Completed upload", event.file.name)
-			})
-
-			uploader.addEventListener('error', function (event) {
-				console.log("Error upload", event.file.name)
-			})
-
-
-			/*
-
-				MARKING SECTION
-
-			*/
-
-			let owl = $(".owl-carousel");
-
-			socket.on('files', function (data) {
-				let content = "";
-				for (let file of data) {
-					let path = "./questions/" + file;
-					content += "<img class='individual-question' src=" + path + ">"
-				}
-
-				owl.append(content)
-
-				owl.owlCarousel({
-			      	center: true,
-				    loop:false,
-				    nav:true,
-				    items: 1.2,
-				    margin:50
-			 
-			  });
-			})
-
-			$(window).keyup(function (event) {    
-
-			    // handle cursor keys
-			    if (event.keyCode == 37) {
-			       // go left
-			       owl.trigger('prev.owl.carousel');
-			    } else if (event.keyCode == 39) {
-			       // go right
-			       owl.trigger('next.owl.carousel');
-			    }
-
-			});
-
-			let currQuestion = 0;
-			let students = [
-
-			]
-
-			$("#score").keyup(function (event) {
-				if (event.keyCode == 13) {
-					console.log($("#score").val())
-					owl.trigger('next.owl.carousel');
-					$("#score").val("")
-				}
-			})
-
-			owl.on('changed.owl.carousel', function (e) {
-				currQuestion = e.item.index;
-	            console.log(e.item.index)
-	        });
-
-
-			/*
-
-				VIEW SCORE SECTION
-
-			*/
-
-
-		</script>
-	</body>
+   <head>
+      <title>QuickMark</title>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+      <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      <meta property="og:title" content="QuickMark" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://quickmark.victorwei.com" />
+      <meta property="og:image" content="https://quickmark.victorwei.com/content.png" />
+      <meta property="og:description" content="MARK EASY" />
+      <meta name="keywords" content="HTML, CSS, JavaScript, Three.js">
+      <meta name="author" content="Deus Group">
+      <style>
+         body {font-family: "Times New Roman", Georgia, Serif;}
+         h1, h2, h3, h4, h5, h6 {
+         font-family: "Playfair Display";
+         }
+         body {
+         background-color: #ffffff;
+         font-family: sans-serif;
+         }
+         .item {
+         display: inline-block;
+         }
+         .individual-question {
+         display: block;
+         }
+         #bodysection {
+         padding-left: 3%;
+         padding-bottom: 3%;
+         }
+      </style>
+      <link rel="stylesheet" href="./css/owl.carousel.css">
+      <link rel="stylesheet" href="./css/owl.theme.default.css">
+   </head>
+   <body>
+      <!-- Navbar (sit on top) -->
+      <div class="w3-top">
+         <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:3px;">
+            <a href="#home" class="w3-bar-item w3-button">QuickMark.</a>
+            <!-- Right-sided navbar links. Hide them on small screens -->
+            <div class="w3-right w3-hide-small">
+               <a href="#about" class="w3-bar-item w3-button">About</a>
+               <a href="#menu" class="w3-bar-item w3-button">Menu</a>
+               <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+            </div>
+         </div>
+      </div>
+      <br><br><br>
+      <center>
+         <h1 style="font-family: sans-serif;">QuickMark.</h1>
+      </center>
+      <div id="bodysection">
+         <div id="upload_section">
+            <h2>Upload Tests Section</h2>
+            <label>Student Name: </label><input type="student_name" id="siofu_input" multiple><br/>
+            <br><label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
+            <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
+            <!-- <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/> -->
+         </div>
+         <br><br>
+         <div id="marking_section">
+            <h2>Mark Tests Section</h2>
+            <h3>Student: Bob</h3>
+            <div id="owl-demo" class="owl-carousel owl-theme">
+            </div>
+            <label>Score: </label><input id="score" type="text"><br><br>
+            <label>Comments: </label>
+            <textarea id="comment" rows="4" cols="50"></textarea>
+            <br>
+            <br>
+            <button id="submit_score">Submit</button>
+         </div>
+         <br><br>
+         <div id="score_section">
+            <h2>View Student Scores Section</h2>
+         </div>
+      </div>
+      <!-- Load Resources -->
+      <script src="javascripts/socket.io.js"></script>
+      <script src="javascripts/jquery.js"></script>
+      <script src="javascripts/owl.carousel.js"></script>
+      <script src="javascripts/client.js"></script>
+      <script>
+         /*
+         
+         	UPLOAD TESTS SECTION
+         
+         */
+         	var socket = io.connect();
+         var uploader = new SocketIOFileUpload(socket);
+         uploader.listenOnInput(document.getElementById("siofu_input"));
+         
+         // Start event
+         
+         uploader.addEventListener("start", function (event) {
+         	console.log("Starting upload", event.file.name)
+         })
+         
+         // Progress event
+         
+         uploader.addEventListener("progress", function (event) {
+         	var percentage = event.bytesLoaded / event.file.size * 100;
+         	$("#upload_progress").val(percentage)
+         })
+         
+         // Complete Event
+         
+         var updateId;
+         
+         uploader.addEventListener('complete', function (event) {
+         	console.log("Completed upload", event.file.name)
+         })
+         
+         uploader.addEventListener('error', function (event) {
+         	console.log("Error upload", event.file.name)
+         })
+         
+         
+         /*
+         
+         	MARKING SECTION
+         
+         */
+         
+         let owl = $(".owl-carousel");
+         
+         socket.on('files', function (data) {
+         	let content = "";
+         	for (let file of data) {
+         		let path = "./questions/" + file;
+         		content += "<img class='individual-question' src=" + path + ">"
+         	}
+         
+         	owl.append(content)
+         
+         	owl.owlCarousel({
+               	center: true,
+         	    loop:false,
+         	    nav:true,
+         	    items: 1.2,
+         	    margin:50
+          
+           });
+         })
+         
+         $(window).keyup(function (event) {    
+         
+             // handle cursor keys
+             if (event.keyCode == 37) {
+                // go left
+                owl.trigger('prev.owl.carousel');
+             } else if (event.keyCode == 39) {
+                // go right
+                owl.trigger('next.owl.carousel');
+             }
+         
+         });
+         
+         let currQuestion = 0;
+         let students = [
+         
+         ]
+         
+         $("#score").keyup(function (event) {
+         	if (event.keyCode == 13) {
+         		console.log($("#score").val())
+         		owl.trigger('next.owl.carousel');
+         		$("#score").val("")
+         	}
+         })
+         
+         owl.on('changed.owl.carousel', function (e) {
+         	currQuestion = e.item.index;
+                   console.log(e.item.index)
+               });
+         
+         
+         /*
+         
+         	VIEW SCORE SECTION
+         
+         */
+         
+         
+      </script>
+   </body>
 </html>
