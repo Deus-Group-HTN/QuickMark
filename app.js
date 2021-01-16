@@ -36,6 +36,8 @@ app.use('/*', function (req, res, next) {
 
 let Files = {}
 
+
+
 // Server-client connection architecture
 io.on('connection', function(socket) {
 	console.log("Connection made")
@@ -43,6 +45,30 @@ io.on('connection', function(socket) {
 	var uploader = new siofu();
     uploader.dir = "./public/files";
     uploader.listen(socket);
+
+    uploader.on('complete', function (event) {
+    	/*fs.readdir(__dirname + '/public/questions', (err, files) => {
+			if (err) {
+				console.log("Error finding questions")
+			} else {
+				var oFiles = [];
+				for (var i = 0; i < files.length; i++)
+					oFiles.push(files[i])
+				socket.emit('files', oFiles)
+			}
+		})*/
+    })
+
+    fs.readdir(__dirname + '/public/questions', (err, files) => {
+		if (err) {
+			console.log("Error finding questions")
+		} else {
+			var oFiles = [];
+			for (var i = 0; i < files.length; i++)
+				oFiles.push(files[i])
+			socket.emit('files', oFiles)
+		}
+	})
 
 	socket.on('disconnect', function () {
 
