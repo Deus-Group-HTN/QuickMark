@@ -31,15 +31,16 @@ for c in contours:
         box_tuples.append((x, y, w, h))
 box_tuples = sorted(box_tuples, key=lambda box: box[1])
 question_number = 0
-os.mkdir('../public/questions/' + sys.argv[2])
+folder_loc = '../public/questions/' + sys.argv[2] + '/'
+if not os.path.exists(folder_loc):
+    os.mkdir(folder_loc)
 for box in box_tuples:
     question_number += 1
     x, y, w, h = box
     crop_img = img[y:y+h, x:x+w]
-    filename = '../public/questions/' + sys.argv[2] + str(question_number) + '.jpg'
+    filename = folder_loc + str(question_number) + '.jpg'
     cv2.imwrite(os.path.join(os.getcwd(), filename), crop_img)
-    cv2.rectangle(mask, (x, y), (x+w, y+h), (0, 0, 255), -1)
-
+print('Test processed.')
 # res_final = cv2.bitwise_and(img, img, mask=cv2.bitwise_not(mask))
 
 # cv2.imshow("boxes", mask)
