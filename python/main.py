@@ -5,12 +5,12 @@ import os
 import sys
 
 
-images = convert_from_path('./public/temp/' + sys.argv[1])
+images = convert_from_path('../public/temp/' + sys.argv[1])
 img =  cv2.cvtColor(np.array(images[0]), cv2.COLOR_RGB2BGR)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
 
-thresh_inv = cv2.inRange(gray, 0, 120)
+thresh_inv = cv2.inRange(gray, 0, 80)
 
 # Blur the image
 blur = cv2.GaussianBlur(thresh_inv,(1,1),0)
@@ -30,7 +30,7 @@ for c in contours:
         box_tuples.append((x, y, w, h))
 box_tuples = sorted(box_tuples, key=lambda box: box[1])
 question_number = 0
-folder_loc = './public/questions/' + sys.argv[2] + '/'
+folder_loc = '../public/questions/' + sys.argv[2] + '/'
 if not os.path.exists(folder_loc):
     os.mkdir(folder_loc)
 for box in box_tuples:
@@ -39,6 +39,7 @@ for box in box_tuples:
     crop_img = img[y:y+h, x:x+w]
     filename = folder_loc + str(question_number) + '.jpg'
     cv2.imwrite(os.path.join(os.getcwd(), filename), crop_img)
+print('Test processed.')
 # res_final = cv2.bitwise_and(img, img, mask=cv2.bitwise_not(mask))
 
 # cv2.imshow("boxes", mask)
