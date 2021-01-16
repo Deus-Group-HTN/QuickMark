@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>QuickMark</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<!-- <meta property="og:title" content="BlockCraft" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://blockcraft.victorwei.com" />
+		<meta property="og:image" content="https://blockcraft.victorwei.com/content.png" />
+		<meta property="og:description" content="BlockCraft is a WebGL implementation of an infinite procedurally-generated voxel world that runs on the browser. This project originally spawned as a Minecraft Classic clone but has expanded to include multiplayer PvP, crafting, shaders and much more!" />
+		<meta name="keywords" content="HTML, CSS, JavaScript, Three.js">
+		<meta name="author" content="Victor Wei"> -->
+
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+
+				user-select: none;
+			}
+
+			body {
+				background-color: #ADD8E6;
+				margin: 0;
+				overflow: hidden;
+
+			}
+
+		</style>
+	</head>
+	<body>
+
+		<h1>QuickMark</h1>
+
+		<h2>Upload Tests Section</h2>
+
+		<span id='UploadArea'>
+            <label for="FileBox">Choose A File: </label><input type="file" id="siofu_input"><br>
+ 
+            <button  type='button' id='UploadButton' class='Button'>Upload</button>
+        </span>
+
+        <h4></h4>
+
+        <!-- <embed src="file_name.pdf" width="800px" height="2100px" /> -->
+
+        <h2>Mark Tests Section</h2>
+
+
+        <h2>View Student Scores Section</h2>
+
+		<!-- Load Resources -->
+		<script src="javascripts/socket.io.js"></script>
+		<script src="javascripts/jquery.js"></script>
+		<script src="javascripts/client.js"></script>
+
+		<script>
+		 	var socket = io.connect();
+			var uploader = new SocketIOFileUpload(socket);
+			uploader.listenOnInput(document.getElementById("siofu_input"));
+
+		</script>
+	</body>
+</html>
