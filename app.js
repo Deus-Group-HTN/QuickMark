@@ -49,18 +49,31 @@ io.on('connection', function(socket) {
 
     uploader.on('complete', function (event) {
 
+    	let studentName = 'Alex'
+
     	console.log(event.file.name)
 
     	let options = {
 		  mode: 'text',
 		  pythonOptions: ['-u'], // get print results in real-time
-		  args: [event.file.name, 'Alex']
+		  args: [event.file.name, studentName]
 		};
 
 		PythonShell.run('./python/main.py', options, function (err, results) {
 		  if (err) throw err;
 		  // results is an array consisting of messages collected during execution
-		  console.log('results: %j', results);
+		  console.log("Completed image processing");
+
+		  fs.readdir(__dirname + '/public/questions/' + studentName, (err, files) => {
+				if (err) {
+					console.log("Error finding questions")
+				} else {
+					var oFiles = [];
+					for (var i = 0; i < files.length; i++)
+						oFiles.push(files[i])
+					socket.emit('files', oFiles)
+				}
+			})
 		});
 
 		/*const pythonProcess = spawn('python',["./python/main.py", event.file.name, "Alex"]);
@@ -69,17 +82,6 @@ io.on('connection', function(socket) {
 	        console.log(data.toString())
 	    } ) */
 
-
-    	/*fs.readdir(__dirname + '/public/questions', (err, files) => {
-			if (err) {
-				console.log("Error finding questions")
-			} else {
-				var oFiles = [];
-				for (var i = 0; i < files.length; i++)
-					oFiles.push(files[i])
-				socket.emit('files', oFiles)
-			}
-		})*/
     })
 
     fs.readdir(__dirname + '/public/questions', (err, files) => {
