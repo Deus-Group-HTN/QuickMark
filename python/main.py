@@ -1,11 +1,14 @@
 from pdf2image import convert_from_path
 import cv2
 import numpy as np
+import os
 images = convert_from_path('Hack the North Test Test - Filled.pdf')
 img =  cv2.cvtColor(np.array(images[0]), cv2.COLOR_RGB2BGR)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
-thresh_inv = cv2.bitwise_not(cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 1))
+
+thresh_inv = cv2.inRange(gray, 0, 120)
+#thresh_inv = cv2.bitwise_not(cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 1))
 
 # Blur the image
 blur = cv2.GaussianBlur(thresh_inv,(1,1),0)
@@ -22,7 +25,7 @@ box_tuples = []
 for c in contours:
     # get the bounding rect
     x, y, w, h = cv2.boundingRect(c)
-    if w*h>250000:
+    if w*h>100000:
         box_tuples.append((x, y, w, h))
 box_tuples = sorted(box_tuples, key=lambda box: box[1])
 question_number = 0
@@ -30,7 +33,8 @@ for box in box_tuples:
     question_number += 1
     x, y, w, h = box
     crop_img = img[y:y+h, x:x+w]
-    cv2.imwrite('../public/questions/' + str(question_number) + '.jpg', crop_img)
+    filename = 'questions/' + str(question_number) + '.jpg'
+    cv2.imwrite(os.path.join(os.getcwd(), filename), crop_img)
     cv2.rectangle(mask, (x, y), (x+w, y+h), (0, 0, 255), -1)
 
 res_final = cv2.bitwise_and(img, img, mask=cv2.bitwise_not(mask))
