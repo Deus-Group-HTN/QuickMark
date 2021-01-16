@@ -1,4 +1,1 @@
-import cv2
-
-
-img = cv2.imread('test.jpg')
+print('Hello world')
