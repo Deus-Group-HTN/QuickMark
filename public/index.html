@@ -15,6 +15,7 @@
 
 		<style>
 			html, body {
+
 			}
 
 			body {
@@ -28,8 +29,6 @@
 
 			.individual-question {
 			    display: block;
-			    width: 80%;
-			    height: auto;
 			}
 
 		</style>
@@ -38,36 +37,43 @@
 		<link rel="stylesheet" href="./css/owl.theme.default.css">
 	</head>
 	<body>
+		<center>
 
-		<h1>QuickMark</h1>
+			<h1>QuickMark</h1>
 
-		<div id="upload_section">
-			<h2>Upload Tests Section</h2>
+			<div id="upload_section">
+				<h2>Upload Tests Section</h2>
 
-	        <label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
-	        <label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
+				<label>Student Name: </label><input type="student_name" id="siofu_input" multiple><br/>
+		        <label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
+		        <label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
 
-	        <!-- <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/> -->
-    	</div>
+		        <!-- <embed src="files/Hack the North Test Test - Filled.pdf" width="800px" height/> -->
+	    	</div>
 
-    	<div id="marking_section">
-	        <h2>Mark Tests Section</h2>
+	    	<div id="marking_section">
+		        <h2>Mark Tests Section</h2>
 
-        	<div id="owl-demo" class="owl-carousel owl-theme">
+		        <h3>Student: Bob</h3>
 
-			</div>
+	        	<div id="owl-demo" class="owl-carousel owl-theme">
 
-	        <label>Score: </label><input type="text">
+				</div>
 
-	    </div>
+		        <label>Score: </label><input id="score" type="text"><br>
+		        <label>Comments: </label><textarea id="comment" rows="4" cols="50"></textarea><br>
+		        <button id="submit_score">Submit</button>
+
+		    </div>
 
 
-	    <div id="score_section">
-        	<h2>View Student Scores Section</h2>
+		    <div id="score_section">
+	        	<h2>View Student Scores Section</h2>
 
 
 
-    	</div>
+	    	</div>
+	    </center>
 
 		<!-- Load Resources -->
 		<script src="javascripts/socket.io.js"></script>
@@ -130,11 +136,10 @@
 				owl.append(content)
 
 				owl.owlCarousel({
- 
-			      center: true,
-				    items:1.2,
+			      	center: true,
 				    loop:false,
 				    nav:true,
+				    items: 1.2,
 				    margin:50
 			 
 			  });
@@ -152,6 +157,24 @@
 			    }
 
 			});
+
+			let currQuestion = 0;
+			let students = [
+
+			]
+
+			$("#score").keyup(function (event) {
+				if (event.keyCode == 13) {
+					console.log($("#score").val())
+					owl.trigger('next.owl.carousel');
+					$("#score").val("")
+				}
+			})
+
+			owl.on('changed.owl.carousel', function (e) {
+				currQuestion = e.item.index;
+	            console.log(e.item.index)
+	        });
 
 
 			/*
