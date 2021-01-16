@@ -31,6 +31,7 @@ for c in contours:
         box_tuples.append((x, y, w, h))
 box_tuples = sorted(box_tuples, key=lambda box: box[1])
 question_number = 0
+os.mkdir('../public/questions/' + sys.argv[2])
 for box in box_tuples:
     question_number += 1
     x, y, w, h = box
