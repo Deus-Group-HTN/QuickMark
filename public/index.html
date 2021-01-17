@@ -16,7 +16,10 @@
       <meta name="keywords" content="HTML, CSS, JavaScript, Three.js">
       <meta name="author" content="Deus Group">
       <style>
-         body {font-family: sans-serif, "Times New Roman", Georgia, Serif;}
+         body {
+         	font-family: sans-serif, "Times New Roman", Georgia, Serif;
+  			
+         }
          h1, h2, h3, h4, h5, h6 {
          font-family: sans-serif;
          }
@@ -88,6 +91,7 @@
 		}
 
 		.section {
+			position: relative;
 			display: table-cell;
 			width: 100vw;
 			height: 100vh;
@@ -105,6 +109,22 @@
 			font-size: 40px;
 		}
 
+		#home_section {
+			
+		}
+
+		#upload_section {
+			background-color: lightblue;
+		}
+
+		#marking_section {
+			background-color: white;
+		}
+
+		#score_section {
+			background-color: lightblue;
+		}
+
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
       <link rel="stylesheet" href="./css/owl.theme.default.css">
@@ -113,12 +133,12 @@
       <!-- Navbar (sit on top) -->
       <div class="w3-top">
          <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:3px;">
-            <a href="#home" class="w3-bar-item w3-button"><span id="navbarbrand">quickmark</span>.online</a>
+            <a id="home-nav" class="w3-bar-item w3-button"><span id="navbarbrand">quickmark</span>.online</a>
             <!-- Right-sided navbar links. Hide them on small screens -->
             <div class="w3-right w3-hide-small">
-               <a href="#jumptouploads" class="w3-bar-item w3-button">About</a>
-               <a href="#jumptomarkings" class="w3-bar-item w3-button">Menu</a>
-               <a href="#jumptoss" class="w3-bar-item w3-button">Student Scores</a>
+               <a id="upload-nav" class="w3-bar-item w3-button">Upload</a>
+               <a id="mark-nav" class="w3-bar-item w3-button">Mark</a>
+               <a id="score-nav" class="w3-bar-item w3-button">Student Scores</a>
             </div>
          </div>
       </div>
@@ -126,6 +146,8 @@
 
       <!-- Big Boy Body -->
       <div id="bodysection">
+
+      	<!-- HOME -->
 
       	<div id="home_section" class="section" >
       		<div class="inner-section">
@@ -142,26 +164,38 @@
 	    	</div>
       	</div>
 		<div id="jumptouploads"></div>
-         <br><br>
-         <div id="upload_section" style="height: 100vh;">
+
+
+		<!-- UPLOAD -->
+
+        <div id="upload_section" style="height: 100vh; vertical-align: middle; display: table-cell;width: 100vw;">
+
          	<center class="vertical">
-	            <h2>Upload Tests Section</h2>
-				<br><label>Choose A File:</label>
-				<input type="file" id="siofu_input" multiple><br>
-	            <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
+	            <h1>Upload Tests</h1>
+				<br>
+		        <br>
+		        <br>
+		        <br>
+		        <br>
+				<input type="file" id="siofu_input" style="display:none" multiple/>
+				<a class="button4 addfiles" style="background-color:rgb(255, 69, 0); cursor: pointer">Upload Student Tests</a>
+				<br>
+	            <br><progress id="upload_progress" value="0" max="100"> 0% </progress>
 	        </center>
          </div>
 		 <div id="jumptomarkings"></div>
-         <br><br>
-         <div id="marking_section" style="height: 100vh;">
-         	<center>
-            <h2>Mark Tests Section</h2>
+
+         <!-- MARK -->
+
+         <div id="marking_section" style="height: 100vh; display: table-cell;width: 100vw; text-align: center; position: relative; padding-top: 10vh">
+            <h1>Marking Section</h1>
             <h3 id="currentStudent"></h3>
-            <h3 id="currentQuestion">Question: </h3>
-            </center>
-            <div id="owl-demo" class="owl-carousel owl-theme">
-			</div>
-			<center>
+            <h3 id="currentQuestion"></h3>
+            <div id="owl-demo" class="owl-carousel owl-theme" style="width: 100vw; min-height: 30vh">
+            	<h1 style="color: red">Please Upload Tests First</h1>
+            </div>
+
+            <div id="marking_controls" style="position: absolute; bottom: 0; left: 50%; transform: translate(-50%, -20%);"> 
 				<div class="form_group field">
 					<input type="input" class="form__field" id="score" placeholder="Score">	
 					<label class="form__label"></label>
@@ -171,26 +205,29 @@
 
 				<div class="form_group field">
 					<label class="form__label"></label>
-					<input id="comment" type="text" class="form__field" style="width: 30%;" id="commentsunderscore" placeholder="Comments">
+					<input id="comment" type="text" class="form__field" style="width: 30vw;" id="commentsunderscore" placeholder="Comments">
 				</div>
-				
 				<br><br>
-				<!--
-				<p class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</p>
-				<p class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</p>
-				<p class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</p>
-				-->
-				<a href="#jumptomarkings" class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
-				<a href="#jumptomarkings" class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
-				<a href="#jumptomarkings" class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>
-			</center>		
+			<!--
+			<p class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</p>
+			<p class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</p>
+			<p class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</p>
+			-->
+			<a class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
+			<a class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
+			<a class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>	
+
+			</div>
 
 		 </div>
 		 <div id="jumptoss"></div>
-         <br><br>
-         <div id="score_section" style="height: 100vh;">
+        
+
+         <!-- SCORE -->
+
+         <div id="score_section" style="height: 100vh; vertical-align: middle; display: table-cell;width: 100vw;">
             <center>
-            	<h2>View Student Scores Section</h2>
+            	<h1>View Student Scores</h1>
 
             	<button id="download_csv">Download CSV</button>
             </center>
@@ -208,6 +245,36 @@
 
       	/*
 
+      		NAV SECTION
+
+      	*/
+
+      	$("#home-nav").click(function () {
+      		$('html,body').animate({
+	        scrollTop: $("#home_section").offset().top},
+	        'slow');
+      	})
+
+      	$("#upload-nav").click(function () {
+      		$('html,body').animate({
+	        scrollTop: $("#upload_section").offset().top},
+	        'slow');
+      	})
+
+      	$("#mark-nav").click(function () {
+      		$('html,body').animate({
+	        scrollTop: $("#marking_section").offset().top},
+	        'slow');
+      	})
+
+      	$("#score-nav").click(function () {
+      		$('html,body').animate({
+	        scrollTop: $("#score_section").offset().top},
+	        'slow');
+      	})
+
+      	/*
+
       		HOME SECTION
 
       	*/
@@ -220,12 +287,22 @@
 		      backDelay: 1100,
 		      backSpeed: 30
 		    });
-		  }
+		}
+
+		$("#getStarted").click(function () {
+			$('html,body').animate({
+	        scrollTop: $("#upload_section").offset().top},
+	        'slow');
+		})
+
          /*
          
          	UPLOAD TESTS SECTION
          
          */
+
+         $('.addfiles').on('click', function() { $('#siofu_input').click();return false;});
+
         var socket = io.connect();
         var uploader = new SocketIOFileUpload(socket);
         uploader.listenOnInput(document.getElementById("siofu_input"));
@@ -295,9 +372,16 @@
         	})
         	console.log(students.length)
         	if (students.length == numberOfFiles) {
+        		// FINISHED UPLOADING
+
         		$("#marking_section").show();
         		numberOfQuestions = data.files.length;
         		displayQuestion(1);
+        		$("#upload_section").css("background-color", "lightgreen");
+
+        		$('html,body').animate({
+		        scrollTop: $("#marking_section").offset().top},
+		        'slow');
         	}
         })
 
@@ -313,7 +397,7 @@
         		let studentAnswers = student.files;
 
         		let path = "./questions/" + student.name + "/" + studentAnswers[questionNumber-1];
-         		let content = "<div class='student-answer'><div class='demo-centered'>Student Name: </div><img class='answer-image' src='" + path + "''></div>"
+         		let content = "<div class='student-answer'><img class='answer-image' src='" + path + "''></div>"
         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel').trigger('refresh.owl.carousel');
         	}
         }
@@ -360,7 +444,7 @@
    		})
 
    		$("#prev_question").click(function () {
-   			if (currQuestion > 0) {
+   			if (currQuestion > 1) {
    				console.log("Moving to question", currQuestion-1)
    				currQuestion -= 1;
    				$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
