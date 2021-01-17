@@ -42,7 +42,7 @@
 		 }
 		 a.button4{
 			display:inline-block;
-			padding:0.3em 1.2em;
+			padding:1em 2em;
 			margin:0 0.1em 0.1em 0;
 			border:0.16em solid rgba(255,255,255,0);
 			border-radius:2em;
@@ -87,6 +87,23 @@
 			color: gray;
 		}
 
+		.section {
+			display: table-cell;
+			width: 100vw;
+			height: 100vh;
+			vertical-align: middle;
+			text-align: center;
+		}
+
+		.inner-section {
+			display: inline-block;
+  			text-align: center;
+		}
+
+		.intro-subtitle{
+			font-family: sans-serif;
+			font-size: 40px;
+		}
 
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
@@ -105,16 +122,24 @@
             </div>
          </div>
       </div>
-      <br><br><br>
       
 
       <!-- Big Boy Body -->
       <div id="bodysection">
 
-      	<div id="home_section" style="height: 100vh;">
-      		<center>
-		        <h1 style="font-family: sans-serif; " class="animate__animated animate__bounce">Quick<span id="titlemark">Mark.</span></h1>
-		    </center>
+      	<div id="home_section" class="section" >
+      		<div class="inner-section">
+
+		        <h1 style="font-family: sans-serif; font-size: 10vh;" class="animate__animated animate__bounce">Quick<span id="titlemark">Mark.</span></h1>
+		        <p class="intro-subtitle"><span class="text-slider-items" style="display: none">Fast., Easy., Reliable.</span><strong class="text-slider"></strong><span class="typed-cursor"></span></p>
+
+		        <br>
+		        <br>
+		        <br>
+		        <br>
+		        <br>
+		        <a href="#" class="button4" id="getStarted" style="background-color:rgb(255, 69, 0)">Get Started</a>
+	    	</div>
       	</div>
 
          <div id="upload_section" style="height: 100vh;">
@@ -125,7 +150,7 @@
 	            <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
 	        </center>
          </div>
-         <br><br>
+
          <div id="marking_section" style="height: 100vh;">
          	<center>
             <h2>Mark Tests Section</h2>
@@ -171,7 +196,24 @@
       <script src="javascripts/jquery.js"></script>
       <script src="javascripts/owl.carousel.js"></script>
       <script src="javascripts/client.js"></script>
+      <script src="javascripts/typed.js"></script>
       <script>
+
+      	/*
+
+      		HOME SECTION
+
+      	*/
+      	 if ($('.text-slider').length == 1) {
+		    var typed_strings = $('.text-slider-items').text();
+		    var typed = new Typed('.text-slider', {
+		      strings: typed_strings.split(','),
+		      typeSpeed: 80,
+		      loop: true,
+		      backDelay: 1100,
+		      backSpeed: 30
+		    });
+		  }
          /*
          
          	UPLOAD TESTS SECTION
