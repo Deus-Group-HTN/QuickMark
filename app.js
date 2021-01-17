@@ -87,6 +87,26 @@ io.on('connection', function(socket) {
 
     })
 
+    socket.on('sampleTests', function () {
+    	let studentNames = ['Alex Deng', 'Victor Wei', 'Ibrahim Ahmed']
+    	for (let studentName of studentNames) {
+    		fs.readdir(__dirname + '/public/questions/' + studentName, (err, files) => {
+				if (err) {
+					console.log("Error finding questions")
+				} else {
+					var oFiles = [];
+					for (var i = 0; i < files.length; i++)
+						oFiles.push(files[i])
+					socket.emit('files', {
+						files: oFiles,
+						name: studentName
+					})
+				}
+			})
+    	}
+	    	
+    })
+
 	socket.on('disconnect', function () {
 
 	});
