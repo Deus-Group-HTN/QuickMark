@@ -60,6 +60,10 @@
 		 a.button4:hover{
 			border-color: rgba(255,255,255,1);
 		 }
+
+		 #currentStudent {
+		 	float:center;
+		 }
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
       <link rel="stylesheet" href="./css/owl.theme.default.css">
@@ -89,12 +93,14 @@
             <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
          </div>
          <br><br>
-         <div id="marking_section">
+
+         <div id="marking_section" style="display:none">
             <h2>Mark Tests Section</h2>
-            <h3 id="currentStudent"></h3>
+            <h3 id="currentStudent">Student: </h3>
+            <h3 id="currentQuestion">Question: </h3>
             <div id="owl-demo" class="owl-carousel owl-theme">
             </div>
-            <label>Score: </label><input id="score" type="text"><br><br>
+            <label>Score: </label><input id="score" type="number"><br><br>
             <label>Comments: </label>
             <textarea id="comment" rows="4" cols="50"></textarea>
             <br>
@@ -107,7 +113,8 @@
 
          </div>
          <br><br>
-         <div id="score_section">
+
+         <div id="score_section" style="display:none">
             <h2>View Student Scores Section</h2>
          </div>
 	  </div>
@@ -192,12 +199,15 @@
         	})
         	console.log(students.length)
         	if (students.length == numberOfFiles) {
+        		$("#marking_section").show();
         		numberOfQuestions = data.files.length;
         		displayQuestion(1);
         	}
         })
 
         function displayQuestion(questionNumber) {
+        	$("#currentStudent").text("Student: " + students[currStudent].name)
+        	$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
 
         	for (var i=0; i<100; i++) {
 			   $(".owl-carousel").trigger('remove.owl.carousel', [i]).trigger('refresh.owl.carousel');
@@ -216,18 +226,17 @@
          
             // handle cursor keys
             if (event.keyCode == 37) {
-                // go left
                 owl.trigger('prev.owl.carousel');
             } else if (event.keyCode == 39) {
-                // go right
                 owl.trigger('next.owl.carousel');
             }
          
         });
          
         let currQuestion = 1;
+        let currStudent = 0;
          
-        $("#score").keyup(function (event) {
+        $("#score").keydown(function (event) {
          	if (event.keyCode == 13) {
 
          		students[currStudent].score[currQuestion-1] = parseInt($("#score").val())
@@ -235,17 +244,33 @@
          		console.log("Gave a score of",$("#score").val(),"to",students[currStudent].name)
          		owl.trigger('next.owl.carousel');
          		$("#score").val("")
+
+         		// At the end of the carousel
+                if (currStudent+1 == numberOfFiles) {
+                	console.log("NEXT")
+                	if (currQuestion < numberOfQuestions) {
+		   				console.log("Moving to question", currQuestion+1)
+
+		   				currQuestion += 1;
+		   				$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
+		   				displayQuestion(currQuestion)
+		   			}
+                }
          	}
         })
          
         owl.on('changed.owl.carousel', function (e) {
  			currStudent = e.item.index;
+ 			if (currStudent != null)
+        		$("#currentStudent").text("Student: " + students[currStudent].name)
    		});
 
    		$("#next_question").click(function () {
    			if (currQuestion < numberOfQuestions) {
    				console.log("Moving to question", currQuestion+1)
+
    				currQuestion += 1;
+   				$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
    				displayQuestion(currQuestion)
    			}
    		})
@@ -254,6 +279,7 @@
    			if (currQuestion > 0) {
    				console.log("Moving to question", currQuestion-1)
    				currQuestion -= 1;
+   				$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
    				displayQuestion(currQuestion)
    			}
    		})
@@ -264,6 +290,9 @@
          	VIEW SCORE SECTION
          
         */
+
+
+
          
          
       </script>
