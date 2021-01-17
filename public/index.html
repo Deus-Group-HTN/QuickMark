@@ -31,8 +31,6 @@
          display: block;
          }
          #bodysection {
-         padding-left: 3%;
-         padding-bottom: 3%;
 		 }
 		 #navbarbrand {
 			 color: rgb(255, 69, 0);
@@ -89,7 +87,6 @@
 			color: gray;
 		}
 
-		
 
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
@@ -109,18 +106,27 @@
          </div>
       </div>
       <br><br><br>
-      <center>
-        <h1 style="font-family: sans-serif; " class="animate__animated animate__bounce">Quick<span id="titlemark">Mark.</span></h1>
-      </center>
+      
+
+      <!-- Big Boy Body -->
       <div id="bodysection">
-         <div id="upload_section">
-            <h2>Upload Tests Section</h2>
-			<br><label>Choose A File:</label>
-			<input type="file" id="siofu_input" multiple><br>
-            <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
+
+      	<div id="home_section" style="height: 100vh;">
+      		<center>
+		        <h1 style="font-family: sans-serif; " class="animate__animated animate__bounce">Quick<span id="titlemark">Mark.</span></h1>
+		    </center>
+      	</div>
+
+         <div id="upload_section" style="height: 100vh;">
+         	<center class="vertical">
+	            <h2>Upload Tests Section</h2>
+				<br><label>Choose A File:</label>
+				<input type="file" id="siofu_input" multiple><br>
+	            <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
+	        </center>
          </div>
          <br><br>
-         <div id="marking_section">
+         <div id="marking_section" style="height: 100vh;">
          	<center>
             <h2>Mark Tests Section</h2>
             <h3 id="currentStudent"></h3>
@@ -150,7 +156,7 @@
 
          </div>
          <br><br>
-         <div id="score_section">
+         <div id="score_section" style="height: 100vh;">
             <center>
             	<h2>View Student Scores Section</h2>
 
@@ -258,7 +264,7 @@
         		let studentAnswers = student.files;
 
         		let path = "./questions/" + student.name + "/" + studentAnswers[questionNumber-1];
-         		let content = "<div id='student-answer'><img src='" + path + "''></div>"
+         		let content = "<div class='student-answer'><div class='demo-centered'>Student Name: </div><img class='answer-image' src='" + path + "''></div>"
         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel').trigger('refresh.owl.carousel');
         	}
         }
