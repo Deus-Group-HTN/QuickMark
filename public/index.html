@@ -95,20 +95,11 @@
             <div id="owl-demo" class="owl-carousel owl-theme">
             </div>
             <label>Score: </label><input id="score" type="text"><br><br>
-            <!-- <label>Comments: </label>
-            <textarea id="comment" rows="4" cols="50"></textarea> -->
+            <label>Comments: </label>
+            <textarea id="comment" rows="4" cols="50"></textarea>
             <br>
             <br>
-
-            <button id="submit_score">Submit</button>
-
-            <br>
-            <br>
-
-            <button id="prev_question">Previous Question</button>
-            <button id="next_question">Next Question</button>
-
-            
+       
 			<a href="#" class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
 			<a href="#" class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
 			<a href="#" class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>
@@ -216,16 +207,9 @@
         		let studentAnswers = student.files;
 
         		let path = "./questions/" + student.name + "/" + studentAnswers[questionNumber-1];
-         		let content = "<img class='individual-question' src=" + path + ">"
+         		let content = "<img class='individual-question' src='" + path + "''>"
         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel').trigger('refresh.owl.carousel');
         	}
-
-         	/*for (let file of data.files) {
-         		let path = "./questions/" + data.name + "/" + file;
-         		let content = "<img class='individual-question' src=" + path + ">"
-
-         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel')
-         	}*/
         }
         
         $(window).keyup(function (event) {    
