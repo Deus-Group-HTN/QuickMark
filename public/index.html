@@ -116,9 +116,9 @@
             <a href="#home" class="w3-bar-item w3-button"><span id="navbarbrand">quickmark</span>.online</a>
             <!-- Right-sided navbar links. Hide them on small screens -->
             <div class="w3-right w3-hide-small">
-               <a href="#about" class="w3-bar-item w3-button">About</a>
-               <a href="#menu" class="w3-bar-item w3-button">Menu</a>
-               <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+               <a href="#jumptouploads" class="w3-bar-item w3-button">About</a>
+               <a href="#jumptomarkings" class="w3-bar-item w3-button">Menu</a>
+               <a href="#jumptoss" class="w3-bar-item w3-button">Student Scores</a>
             </div>
          </div>
       </div>
@@ -141,7 +141,8 @@
 		        <a href="#" class="button4" id="getStarted" style="background-color:rgb(255, 69, 0)">Get Started</a>
 	    	</div>
       	</div>
-
+		<div id="jumptouploads"></div>
+         <br><br>
          <div id="upload_section" style="height: 100vh;">
          	<center class="vertical">
 	            <h2>Upload Tests Section</h2>
@@ -150,7 +151,8 @@
 	            <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
 	        </center>
          </div>
-
+		 <div id="jumptomarkings"></div>
+         <br><br>
          <div id="marking_section" style="height: 100vh;">
          	<center>
             <h2>Mark Tests Section</h2>
@@ -173,13 +175,18 @@
 				</div>
 				
 				<br><br>
-				
-				<a href="#" class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
-				<a href="#" class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
-				<a href="#" class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>
+				<!--
+				<p class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</p>
+				<p class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</p>
+				<p class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</p>
+				-->
+				<a href="#jumptomarkings" class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
+				<a href="#jumptomarkings" class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
+				<a href="#jumptomarkings" class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>
 			</center>		
 
-         </div>
+		 </div>
+		 <div id="jumptoss"></div>
          <br><br>
          <div id="score_section" style="height: 100vh;">
             <center>
