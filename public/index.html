@@ -2,7 +2,8 @@
 <html lang="en">
    <head>
       <title>QuickMark</title>
-      <meta charset="utf-8">
+	  <meta charset="utf-8">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
       <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +33,33 @@
          #bodysection {
          padding-left: 3%;
          padding-bottom: 3%;
-         }
+		 }
+		 #navbarbrand {
+			 color: rgb(255, 69, 0);
+			 font-weight:bold;
+		 }
+		 #titlemark {
+			 color: rgb(255, 69, 0);
+			 font-weight: bold;
+		 }
+		 a.button4{
+			display:inline-block;
+			padding:0.3em 1.2em;
+			margin:0 0.1em 0.1em 0;
+			border:0.16em solid rgba(255,255,255,0);
+			border-radius:2em;
+			box-sizing: border-box;
+			text-decoration:none;
+			font-family:'Roboto',sans-serif;
+			font-weight:300;
+			color:#FFFFFF;
+			text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+			text-align:center;
+			transition: all 0.2s;
+		 }
+		 a.button4:hover{
+			border-color: rgba(255,255,255,1);
+		 }
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
       <link rel="stylesheet" href="./css/owl.theme.default.css">
@@ -41,7 +68,7 @@
       <!-- Navbar (sit on top) -->
       <div class="w3-top">
          <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:3px;">
-            <a href="#home" class="w3-bar-item w3-button">QuickMark.</a>
+            <a href="#home" class="w3-bar-item w3-button"><span id="navbarbrand">quickmark</span>.online</a>
             <!-- Right-sided navbar links. Hide them on small screens -->
             <div class="w3-right w3-hide-small">
                <a href="#about" class="w3-bar-item w3-button">About</a>
@@ -52,12 +79,13 @@
       </div>
       <br><br><br>
       <center>
-         <h1 style="font-family: sans-serif;">QuickMark.</h1>
+         <h1 style="font-family: sans-serif; " class="animate__animated animate__bounce">Quick<span id="titlemark">Mark.</span></h1>
       </center>
       <div id="bodysection">
          <div id="upload_section">
             <h2>Upload Tests Section</h2>
-            <br><label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
+			<br><label>Choose A File:</label>
+			<input type="file" id="siofu_input" multiple><br>
             <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
          </div>
          <br><br>
@@ -71,6 +99,7 @@
             <textarea id="comment" rows="4" cols="50"></textarea> -->
             <br>
             <br>
+<<<<<<< Updated upstream
             <button id="submit_score">Submit</button>
 
             <br>
@@ -78,12 +107,20 @@
 
             <button id="prev_question">Previous Question</button>
             <button id="next_question">Next Question</button>
+=======
+            
+			<a href="#" class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
+			<a href="#" class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
+			<a href="#" class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>
+						
+>>>>>>> Stashed changes
          </div>
          <br><br>
          <div id="score_section">
             <h2>View Student Scores Section</h2>
          </div>
-      </div>
+	  </div>
+	  
       <!-- Load Resources -->
       <script src="javascripts/socket.io.js"></script>
       <script src="javascripts/jquery.js"></script>
