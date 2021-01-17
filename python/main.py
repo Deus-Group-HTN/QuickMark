@@ -3,15 +3,18 @@ import cv2
 import numpy as np
 import os
 import sys
-import shutil
+import glob
 
 
 images = convert_from_path('./public/temp/' + sys.argv[1])
 question_number = 0
 folder_loc = './public/questions/' + sys.argv[2] + '/'
 if os.path.exists(folder_loc):
-    shutil.rmtree(folder_loc)
-os.mkdir(folder_loc)
+    files = glob.glob(folder_loc + '*')
+    for f in files:
+        os.remove(f)
+else:
+    os.mkdir(folder_loc)
 
 for source_image in images:
     img =  cv2.cvtColor(np.array(source_image), cv2.COLOR_RGB2BGR)
