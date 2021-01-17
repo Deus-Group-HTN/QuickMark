@@ -2,7 +2,8 @@
 <html lang="en">
    <head>
       <title>QuickMark</title>
-      <meta charset="utf-8">
+	  <meta charset="utf-8">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
       <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +33,64 @@
          #bodysection {
          padding-left: 3%;
          padding-bottom: 3%;
-         }
+		 }
+		 #navbarbrand {
+			 color: rgb(255, 69, 0);
+			 font-weight:bold;
+		 }
+		 #titlemark {
+			 color: rgb(255, 69, 0);
+			 font-weight: bold;
+		 }
+		 a.button4{
+			display:inline-block;
+			padding:0.3em 1.2em;
+			margin:0 0.1em 0.1em 0;
+			border:0.16em solid rgba(255,255,255,0);
+			border-radius:2em;
+			box-sizing: border-box;
+			text-decoration:none;
+			font-family:'Roboto',sans-serif;
+			font-weight:300;
+			color:#FFFFFF;
+			text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+			text-align:center;
+			transition: all 0.2s;
+		 }
+		 a.button4:hover{
+			border-color: rgba(255,255,255,1);
+		 }
+
+		.form__group {
+			width: 20%;
+		}
+
+		.form__field {
+			font-family: inherit;
+  			border: 0;
+  			border-bottom: 2px solid grey;
+  			outline: 0;
+			
+  			color: black;
+	  		padding: 7px 0;
+  			background: transparent;
+			transition: border-color 0.2s;
+		}	
+
+		#commentsunderscore {
+			width: 50%;
+		}
+
+		.form__label {
+			position: absolute;
+			top: 0;
+			display: block;
+			transition: 0.2s;
+			color: gray;
+		}
+
+		
+
       </style>
       <link rel="stylesheet" href="./css/owl.carousel.css">
       <link rel="stylesheet" href="./css/owl.theme.default.css">
@@ -41,7 +99,7 @@
       <!-- Navbar (sit on top) -->
       <div class="w3-top">
          <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:3px;">
-            <a href="#home" class="w3-bar-item w3-button">QuickMark.</a>
+            <a href="#home" class="w3-bar-item w3-button"><span id="navbarbrand">quickmark</span>.online</a>
             <!-- Right-sided navbar links. Hide them on small screens -->
             <div class="w3-right w3-hide-small">
                <a href="#about" class="w3-bar-item w3-button">About</a>
@@ -52,36 +110,48 @@
       </div>
       <br><br><br>
       <center>
-         <h1 style="font-family: sans-serif;">QuickMark.</h1>
+        <h1 style="font-family: sans-serif; " class="animate__animated animate__bounce">Quick<span id="titlemark">Mark.</span></h1>
       </center>
       <div id="bodysection">
          <div id="upload_section">
             <h2>Upload Tests Section</h2>
-            <br><label>Choose A File: </label><input type="file" id="siofu_input" multiple><br/>
+			<br><label>Choose A File:</label>
+			<input type="file" id="siofu_input" multiple><br>
             <br><label>Upload Progress: </label><progress id="upload_progress" value="0" max="100"> 0% </progress>
          </div>
          <br><br>
          <div id="marking_section">
             <h2>Mark Tests Section</h2>
-            <h3>Student: Bob</h3>
+            <h3 id="currentStudent"></h3>
             <div id="owl-demo" class="owl-carousel owl-theme">
-            </div>
-            <label>Score: </label><input id="score" type="text"><br><br>
-            <label>Comments: </label>
-            <textarea id="comment" rows="4" cols="50"></textarea>
-            <br>
-            <br>
-            <button id="submit_score">Submit</button>
+			</div>
+			<center>
+				<div class="form_group field">
+					<input type="input" class="form__field" id="score" placeholder="Score">	
+					<label class="form__label"></label>
+				</div>
+			
+				<br><br>
 
-            <button id="prev_question">Previous Question</button>
-            <button id="next_question">Next Question</button>
+				<div class="form_group field">
+					<label class="form__label"></label>
+					<input id="comment" type="text" class="form__field" style="width: 30%;" id="commentsunderscore" placeholder="Comments">
+				</div>
+				
+				<br><br>
+				
+				<a href="#" class="button4" id="submit_score" style="background-color:rgb(255, 69, 0)"> Submit</a>
+				<a href="#" class="button4" id="prev_question" style="background-color:rgb(255, 69, 0)"> Previous Question</a>
+				<a href="#" class="button4" id="next_question" style="background-color:rgb(255, 69, 0)"> Next Question</a>
+			</center>		
+
          </div>
          <br><br>
          <div id="score_section">
-            <h2>View Student Scores Section</h2>
-            <button id="download_csv">Download CSV</button>
+            <center><h2>View Student Scores Section</h2></center>
          </div>
-      </div>
+	  </div>
+	  
       <!-- Load Resources -->
       <script src="javascripts/socket.io.js"></script>
       <script src="javascripts/jquery.js"></script>
@@ -89,47 +159,57 @@
       <script src="javascripts/client.js"></script>
       <script>
          /*
-
+         
          	UPLOAD TESTS SECTION
-
+         
          */
         var socket = io.connect();
         var uploader = new SocketIOFileUpload(socket);
         uploader.listenOnInput(document.getElementById("siofu_input"));
+        var numberOfFiles = 0;
 
+        // Choose event
+
+        uploader.addEventListener("choose", function (event) {
+        	numberOfFiles = event.files.length;
+        })
+         
         // Start event
-
+         
         uploader.addEventListener("start", function (event) {
+        	console.log(event)
         	console.log("Starting upload", event.file.name)
         })
-
+         
         // Progress event
-
+         
         uploader.addEventListener("progress", function (event) {
          	var percentage = event.bytesLoaded / event.file.size * 100;
          	$("#upload_progress").val(percentage)
         })
-
+        
         // Complete Event
-
+        
         var updateId;
-
+         
         uploader.addEventListener('complete', function (event) {
         	console.log("Completed upload", event.file.name)
-        })
 
+        })
+         
         uploader.addEventListener('error', function (event) {
         	console.log("Error upload", event.file.name)
         })
-
-
+         
+        
         /*
-
+         
          	MARKING SECTION
-
+         
         */
-
-        let students = {}
+        
+        let students = [];
+        let numberOfQuestions = 0;
 
         let owl = $(".owl-carousel");
 
@@ -137,28 +217,43 @@
            	center: true,
      	    loop:false,
      	    nav:true,
-     	    items: 1.2,
+     	    items: 2,
      	    margin: 50
-       });
-
+       	});
+         
         socket.on('files', function (data) {
-        	students[data.name] = data.files;
+        	console.log("Received", data.name, "files")
 
-        	doStuff();
-
+        	students.push({
+        		name: data.name,
+        		files: data.files,
+        		score: [],
+        		comments: []
+        	})
+        	console.log(students.length)
+        	if (students.length == numberOfFiles) {
+        		numberOfQuestions = data.files.length;
+        		displayQuestion(1);
+        	}
         })
 
-        function doStuff() {
-         	/*for (let file of data.files) {
-         		let path = "./questions/" + data.name + "/" + file;
-         		let content = "<img class='individual-question' src=" + path + ">"
+        function displayQuestion(questionNumber) {
 
-         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel')
-         	}*/
+        	for (var i=0; i<100; i++) {
+			   $(".owl-carousel").trigger('remove.owl.carousel', [i]).trigger('refresh.owl.carousel');
+			}
+
+        	for (let student of students) {
+        		let studentAnswers = student.files;
+
+        		let path = "./questions/" + student.name + "/" + studentAnswers[questionNumber-1];
+         		let content = "<img class='individual-question' src='" + path + "''>"
+        		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel').trigger('refresh.owl.carousel');
+        	}
         }
-
-        $(window).keyup(function (event) {
-
+        
+        $(window).keyup(function (event) {    
+         
             // handle cursor keys
             if (event.keyCode == 37) {
                 // go left
@@ -167,55 +262,50 @@
                 // go right
                 owl.trigger('next.owl.carousel');
             }
-
+         
         });
-
-        let currQuestion = 0;
-
+         
+        let currQuestion = 1;
+         
         $("#score").keyup(function (event) {
          	if (event.keyCode == 13) {
-         		console.log($("#score").val())
+
+         		students[currStudent].score[currQuestion-1] = parseInt($("#score").val())
+
+         		console.log("Gave a score of",$("#score").val(),"to",students[currStudent].name)
          		owl.trigger('next.owl.carousel');
          		$("#score").val("")
          	}
         })
-
+         
         owl.on('changed.owl.carousel', function (e) {
- 			currQuestion = e.item.index;
-          	console.log(e.item.index)
+ 			currStudent = e.item.index;
    		});
 
    		$("#next_question").click(function () {
-
+   			if (currQuestion < numberOfQuestions) {
+   				console.log("Moving to question", currQuestion+1)
+   				currQuestion += 1;
+   				displayQuestion(currQuestion)
+   			}
    		})
 
    		$("#prev_question").click(function () {
-
+   			if (currQuestion > 0) {
+   				console.log("Moving to question", currQuestion-1)
+   				currQuestion -= 1;
+   				displayQuestion(currQuestion)
+   			}
    		})
-
-      $("#download_csv").click(function() {
-        rows = [];
-
-        for (student of students) {
-          var row = [student.name];
-          for (score of student.scores) {
-            row.push(score);
-          }
-          rows.push(row);
-        }
-
-        let csvContent = "data:text/csv;charset=utf-8,"
-            + rows.map(e => e.join(",")).join("\n");
-            var encodedUri = encodeURI(csvContent);
-        window.open(encodedUri);
-      })
+ 
+         
         /*
-
+         
          	VIEW SCORE SECTION
-
+         
         */
-
-
+         
+         
       </script>
    </body>
 </html>
