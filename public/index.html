@@ -121,8 +121,11 @@
          </div>
          <br><br>
          <div id="marking_section">
+         	<center>
             <h2>Mark Tests Section</h2>
             <h3 id="currentStudent"></h3>
+            <h3 id="currentQuestion">Question: </h3>
+            </center>
             <div id="owl-demo" class="owl-carousel owl-theme">
 			</div>
 			<center>
@@ -148,7 +151,12 @@
          </div>
          <br><br>
          <div id="score_section">
-            <center><h2>View Student Scores Section</h2></center>
+            <center>
+            	<h2>View Student Scores Section</h2>
+
+            	<button id="download_csv">Download CSV</button>
+            </center>
+
          </div>
 	  </div>
 	  
@@ -232,12 +240,15 @@
         	})
         	console.log(students.length)
         	if (students.length == numberOfFiles) {
+        		$("#marking_section").show();
         		numberOfQuestions = data.files.length;
         		displayQuestion(1);
         	}
         })
 
         function displayQuestion(questionNumber) {
+        	$("#currentStudent").text("Student: " + students[currStudent].name)
+        	$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
 
         	for (var i=0; i<100; i++) {
 			   $(".owl-carousel").trigger('remove.owl.carousel', [i]).trigger('refresh.owl.carousel');
@@ -247,7 +258,7 @@
         		let studentAnswers = student.files;
 
         		let path = "./questions/" + student.name + "/" + studentAnswers[questionNumber-1];
-         		let content = "<img class='individual-question' src='" + path + "''>"
+         		let content = "<div id='student-answer'><img src='" + path + "''></div>"
         		$('.owl-carousel').trigger('add.owl.carousel', [content]).trigger('update.owl.carousel').trigger('refresh.owl.carousel');
         	}
         }
@@ -256,18 +267,17 @@
          
             // handle cursor keys
             if (event.keyCode == 37) {
-                // go left
                 owl.trigger('prev.owl.carousel');
             } else if (event.keyCode == 39) {
-                // go right
                 owl.trigger('next.owl.carousel');
             }
-         
+        
         });
          
         let currQuestion = 1;
+        let currStudent = 0;
          
-        $("#score").keyup(function (event) {
+        $("#score").keydown(function (event) {
          	if (event.keyCode == 13) {
 
          		students[currStudent].score[currQuestion-1] = parseInt($("#score").val())
@@ -280,12 +290,16 @@
          
         owl.on('changed.owl.carousel', function (e) {
  			currStudent = e.item.index;
+ 			if (currStudent != null)
+        		$("#currentStudent").text("Student: " + students[currStudent].name)
    		});
 
    		$("#next_question").click(function () {
    			if (currQuestion < numberOfQuestions) {
    				console.log("Moving to question", currQuestion+1)
+
    				currQuestion += 1;
+   				$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
    				displayQuestion(currQuestion)
    			}
    		})
@@ -294,6 +308,7 @@
    			if (currQuestion > 0) {
    				console.log("Moving to question", currQuestion-1)
    				currQuestion -= 1;
+   				$("#currentQuestion").text("Question: " + currQuestion + "/" + numberOfQuestions)
    				displayQuestion(currQuestion)
    			}
    		})
@@ -304,7 +319,41 @@
          	VIEW SCORE SECTION
          
         */
-         
+
+
+        $("#download_csv").click(function() {
+
+	        var first_row = ["Name"];
+			for (var i = 1; i <= numberOfQuestions; i++) {
+			  first_row.push("Question " + i);
+			}
+			first_row.push("Total Score")
+
+			var rows = [first_row];
+
+	        for (student of students) {
+	          var row = [student.name];
+	          let total_score = 0;
+	          for (let i = 0; i < numberOfQuestions; i++) {
+	          	row.push(student.score[i]);
+	            total_score += student.score[i] || 0;
+	          }
+	          row.push(total_score)
+
+	          rows.push(row);
+	        }
+
+	        let csvContent = "data:text/csv;charset=utf-8,"
+	            + rows.map(e => e.join(",")).join("\n");
+	            var encodedUri = encodeURI(csvContent);
+	        var link = document.createElement("a");
+			link.setAttribute("href", encodedUri);
+			link.setAttribute("download", "marks.csv");
+			document.body.appendChild(link); // Required for FF
+
+			link.click();
+	    })
+	         
          
       </script>
    </body>
